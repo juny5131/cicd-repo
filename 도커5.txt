@@ -1,0 +1,24 @@
+a19852a6266ef4c6bb11ee4c97a9bc87-1237575490.eu-central-1.elb.amazonaws.com
+
+
+
+export ECR=052937454741.dkr.ecr.eu-central-1.amazonaws.com
+
+
+docker build -t ${ECR}/products:latest .
+
+
+
+docker build -t ${ECR}/admin23-products:latest .
+
+
+aws ecr create-repository --repository-name admin23-products --region eu-central-1
+
+
+docker push ${ECR}/admin23-products:latest
+
+
+kubectl create deploy admin23-products --image=${ECR}/admin23-products:latest
+
+
+kubectl expose deploy admin23-products --type="ClusterIP" --port=8080
